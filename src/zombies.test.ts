@@ -1,11 +1,19 @@
 import { ok } from "node:assert/strict";
 import { test } from "node:test";
 
+interface Zombie {
+  name: string;
+}
+
 const createRoom = (capacity: number) => {
   const _capacity = capacity;
+  let zombies: Zombie[] = [];
 
   return {
-    isFull: () => true,
+    isFull: () => zombies.length >= _capacity,
+    addZombie: (zombie: Zombie) => {
+      zombies.length < _capacity ? zombies.push(zombie) : (zombies[0] = zombie);
+    },
   };
 };
 
