@@ -9,6 +9,11 @@ const createRoom = (capacity: number) => {
   const _capacity = capacity;
   let _zombies: Zombie[] = [];
 
+  function replaceOldest(zombie: Zombie) {
+    _zombies.shift();
+    _zombies.push(zombie);
+  }
+
   return {
     isFull: () => _zombies.length >= _capacity,
     addZombie: (zombie: Zombie) => {
@@ -16,7 +21,8 @@ const createRoom = (capacity: number) => {
         return false;
       }
 
-      _zombies.length < _capacity ? _zombies.push(zombie) : (_zombies[0] = zombie);
+      _zombies.length < _capacity ? _zombies.push(zombie) : replaceOldest(zombie);
+
       return true;
     },
     getZombies: () => _zombies,
