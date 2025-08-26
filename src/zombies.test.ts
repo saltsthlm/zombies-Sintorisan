@@ -1,4 +1,4 @@
-import { ok } from "node:assert/strict";
+import { ok, strictEqual } from "node:assert/strict";
 import { test } from "node:test";
 
 interface Zombie {
@@ -25,7 +25,15 @@ test("room is full", () => {
   ok(isRoomFull);
 });
 
-test.skip("empty room that fits one zombie is not full", () => {});
+test("empty room that fits one zombie is not full", () => {
+  const room = createRoom(2);
+  const zombie: Zombie = { name: "Kalle" };
+
+  room.addZombie(zombie);
+  const isRoomFull = room.isFull();
+
+  strictEqual(isRoomFull, false);
+});
 
 test.skip("room with no capacity cannot fit any zombies", () => {});
 
