@@ -7,18 +7,19 @@ interface Zombie {
 
 const createRoom = (capacity: number) => {
   const _capacity = capacity;
-  let zombies: Zombie[] = [];
+  let _zombies: Zombie[] = [];
 
   return {
-    isFull: () => zombies.length >= _capacity,
+    isFull: () => _zombies.length >= _capacity,
     addZombie: (zombie: Zombie) => {
-      if (capacity == 0) {
+      if (_capacity == 0) {
         return false;
       }
 
-      zombies.length < _capacity ? zombies.push(zombie) : (zombies[0] = zombie);
+      _zombies.length < _capacity ? _zombies.push(zombie) : (_zombies[0] = zombie);
       return true;
     },
+    getZombies: () => _zombies,
   };
 };
 
@@ -71,6 +72,20 @@ test("two-roomer is not full when a zombie is added", () => {
   strictEqual(isRoomFull, false);
 });
 
-test.skip("second zombie consumes first zombie when added to a one-roomer", () => {});
+test("second zombie consumes first zombie when added to a one-roomer", () => {
+  const room = createRoom(1);
+  const zombies: Zombie[] = [{ name: "Kalle" }, { name: "Stefan" }];
+
+  for (let i = 0; i < zombies.length; i++) {
+    let zombie = zombies[i];
+    let zombieAdded = room.addZombie(zombie);
+    let isRoomFull = room.isFull();
+    let zombiesInRoom: Zombie[] = room.getZombies();
+
+    strictEqual(zombieAdded, true);
+    strictEqual(isRoomFull, true);
+    strictEqual(zombiesInRoom[0].name, zombie.name);
+  }
+});
 
 // You are free to add more tests that you think are relevant!
